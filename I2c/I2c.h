@@ -4,9 +4,9 @@
  */
 #include "Arduino.h"
 
-class Arduini2c {
+class I2c {
 public:
-	Arduini2c(const uint8_t p_address): address(p_address) {}
+	I2c(const uint8_t p_address): address(p_address) {}
 
 	void begin();
 
