@@ -6,36 +6,38 @@
 
 #include <stdint.h> // arduino doesn't recognise <cstdint>
 
-#include "../mw-common/defs.h"
+#include "../common/common.h"
 
 template <typename T> class PCF8591
 {
 public:
 
-	static const uint8_t kChannelMask = 0b00000011
-	static const uint8_t kAutoIncRead = 0b00000100
-	static const uint8_t kADCModeSingle = 0b00000000
-	static const uint8_t kADCMode3Diff = 0b00010000
-	static const uint8_t kADCMode2Plus1 = 0b00100000
-	static const uint8_t kADCMode2Diff = 0b00110000
-	static const uint8_t kDACEnable = 0b01000000
-	static const uint8_t kDACDisable = 0b00000000
+	static constexpr uint8_t kChannelMask = 0b00000011;
+	static constexpr uint8_t kAutoIncRead = 0b00000100;
+	static constexpr uint8_t kADCModeSingle = 0b00000000;
+	static constexpr uint8_t kADCMode3Diff = 0b00010000;
+	static constexpr uint8_t kADCMode2Plus1 = 0b00100000;
+	static constexpr uint8_t kADCMode2Diff = 0b00110000;
+	static constexpr uint8_t kDACEnable = 0b01000000;
+	static constexpr uint8_t kDACDisable = 0b00000000;
 
 	template <typename ... IOArgs> PCF8591(IOArgs ... args): dacEnable(false), io(args ...) {}
 
-	using ins_t = uint_t[4];
+	struct ins_t {
+		uint8_t v[4];
+	};
 
 	/*!
 	 * Read all the inputs at once
 	 * \param adcMode the mode from one of the flags above controlling whether the read is differential or single
 	 * \return a vector of input values
 	 */
-	ins_t adReadAll(uint8_t adcMode=kADCModeSingle){
+	struct ins_t adReadAll(uint8_t adcMode=kADCModeSingle){
 		uint8_t buf[5];
 		ins_t all_ins;
 		uint8_t operation = kAutoIncRead | adcMode | (dacEnable? kDACEnable: kDACDisable);
-		io.readBuf(operation, 5, buf)
-		for (uint8_t i=0; i<4; ++i) all_ins[i] = buf[i+1]
+		io.readBuf(operation, 5, buf);
+		for (uint8_t i=0; i<4; ++i) all_ins.v[i] = buf[i+1];
 		return all_ins;
 	};
 
@@ -48,7 +50,7 @@ public:
 	uint8_t adRead(uint8_t channel, uint8_t adcMode=kADCModeSingle){
 		uint8_t buf[2];
 		uint8_t operation = (channel&kChannelMask) | adcMode | (dacEnable? kDACEnable: kDACDisable);
-		io.readBuf(operation, 2, buf)
+		io.readBuf(operation, 2, buf);
 		return buf[1];
 	};
 
@@ -56,13 +58,19 @@ public:
 	 * Turns the adc on and sends the given value
 	 * \param value The new state of the device output. value of 0 disables the dac
 	 */
-	void daWrite(uint8_t value){
+	void daWrite(uint8_t value) {
 		dacEnable = (value != 0);
 		io.writeByte((dacEnable? kDACEnable: kDACDisable), value);
 	};
 
+	bool begin() {
+		isValid = io.begin();
+		return isValid;
+	}
+
 protected:
 	bool dacEnable;
+	bool isValid;
 	T io;
 };
 /*

@@ -8,13 +8,58 @@
 
 bool I2c::isWireBegun = false;
 
-void I2c::begin()
+void print_hex_byte(uint8_t x, bool andEol)
+{
+	Serial.print("0x");
+	if (x < 16) Serial.print("0");
+	if (andEol) {
+		Serial.println(x, HEX);
+	} else {
+		Serial.print(x, HEX);
+		Serial.print(' ');
+	}
+}
+
+bool I2c::check(const uint8_t addr) {
+	Wire.beginTransmission(addr);
+	return (Wire.endTransmission() == 0);
+}
+
+void I2c::scan(uint8_t ports[], uint8_t &nFound)
 {
 	if (!isWireBegun) {
 		Wire.begin();
 		isWireBegun = true;
 	}
+	byte error, address;
+
+	nFound = 0;
+	for(address = 1; address < 127; address++ ) {
+		// The i2c_scanner uses the return value of the Write.endTransmisstion to see if a device did acknowledge to the address.
+		Wire.beginTransmission(address);
+		error = Wire.endTransmission();
+
+		if (error == 0) {
+			ports[nFound] = address;
+			nFound++;
+		} else if (error == 4) {
+			Serial.print("Unknown error at ");
+			print_hex_byte(address);
+			Serial.println(" ;(");
+		}    
+	}
 }
+
+
+bool I2c::begin()
+{
+	if (!isWireBegun) {
+		Wire.begin();
+		isWireBegun = true;
+	}
+	return check(address);
+}
+
 
 /*!
  *  Write byte to register

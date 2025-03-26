@@ -6,15 +6,15 @@
 
 #include <stdint.h> // arduino doesn't recognise <cstdint>
 
-#include "../mw-common/defs.h"
+#include "../common/common.h"
 
 /** Comment this define to disable interrupt support */
 
 template <typename T> class PCF8574
 {
 public:
-	template <typename T> unsigned constexpr pin(T x) { return 1 << x; }
-	template <typename T, typename ... Args> unsigned constexpr pin(T x, Args ... args) { return 1 << x | bmap(args...); }
+	template <typename PT> unsigned constexpr pin(PT x) { return 1 << x; }
+	template <typename PT, typename ... Args> unsigned constexpr pin(PT x, Args ... args) { return 1 << x | bmap(args...); }
 
 	template <typename ... IOArgs> PCF8574(IOArgs ... args): inputs(0xff), out(0), io(args ...) {}
 
@@ -61,8 +61,17 @@ public:
 		return ~io.readByte() & inputs;
 	}
 
+	bool begin() {
+		isValid = io.begin();
+		if (isValid) {
+			setInputs(inputs);
+		}
+		return isValid;
+	}
+
 protected:
 	uint8_t inputs;
 	uint8_t out;
+	bool isValid = false;
 	T io;
 };
