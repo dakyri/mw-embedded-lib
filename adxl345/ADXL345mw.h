@@ -7,7 +7,7 @@
 
 #include <stdint.h> // arduino doesn't recognise <cstdint>
 
-#include "../mw-common/defs.h"
+#include "../common/common.h"
 
 namespace adxl345 {
 
@@ -25,44 +25,44 @@ public:
 	float z;
 };
 
-static const uint8_t kAddress1 = 0x53;
-static const uint8_t kAddress2 = 0x1d;
-static const uint8_t kRegDevid = 0x00;
-static const uint8_t kRegThreshTap = 0x1D; // 1
-static const uint8_t kRegOfsX = 0x1E;
-static const uint8_t kRegOfsY = 0x1F;
-static const uint8_t kRegOfsZ = 0x20;
-static const uint8_t kRegDur = 0x21; // 2
-static const uint8_t kRegLatent = 0x22; // 3
-static const uint8_t kRegWindow = 0x23; // 4
-static const uint8_t kRegThreshAct = 0x24; // 5
-static const uint8_t kRegThreshInact = 0x25; // 6
-static const uint8_t kRegTimeInact = 0x26; // 7
-static const uint8_t kRegActInactCtl = 0x27;
-static const uint8_t kRegThreshFreefall = 0x28; // 8
-static const uint8_t kRegTimeFreefall = 0x29; // 9
-static const uint8_t kRegTapAxes = 0x2A;
-static const uint8_t kRegActTapStatus = 0x2B;
-static const uint8_t kRegActBwCtl = 0x2C;
-static const uint8_t kRegActPowerCtl = 0x2D;
-static const uint8_t kRegIntEnable = 0x2E;
-static const uint8_t kRegIntMap = 0x2F;
-static const uint8_t kRegIntSource = 0x30; // A
-static const uint8_t kRegDataFormat = 0x31;
-static const uint8_t kRegDataX0 = 0x32;
-static const uint8_t kRegDataX1 = 0x33;
-static const uint8_t kRegDataY0 = 0x34;
-static const uint8_t kRegDataY1 = 0x35;
-static const uint8_t kRegDataZ0 = 0x36;
-static const uint8_t kRegDataZ1 = 0x37;
-static const uint8_t kRegFifoCtl = 0x38;
-static const uint8_t kRegFifoStatus = 0x39;
+static constexpr uint8_t kAddress1 = 0x53;
+static constexpr uint8_t kAddress2 = 0x1d;
+static constexpr uint8_t kRegDevid = 0x00;
+static constexpr uint8_t kRegThreshTap = 0x1D; // 1
+static constexpr uint8_t kRegOfsX = 0x1E;
+static constexpr uint8_t kRegOfsY = 0x1F;
+static constexpr uint8_t kRegOfsZ = 0x20;
+static constexpr uint8_t kRegDur = 0x21; // 2
+static constexpr uint8_t kRegLatent = 0x22; // 3
+static constexpr uint8_t kRegWindow = 0x23; // 4
+static constexpr uint8_t kRegThreshAct = 0x24; // 5
+static constexpr uint8_t kRegThreshInact = 0x25; // 6
+static constexpr uint8_t kRegTimeInact = 0x26; // 7
+static constexpr uint8_t kRegActInactCtl = 0x27;
+static constexpr uint8_t kRegThreshFreefall = 0x28; // 8
+static constexpr uint8_t kRegTimeFreefall = 0x29; // 9
+static constexpr uint8_t kRegTapAxes = 0x2A;
+static constexpr uint8_t kRegActTapStatus = 0x2B;
+static constexpr uint8_t kRegActBwCtl = 0x2C;
+static constexpr uint8_t kRegActPowerCtl = 0x2D;
+static constexpr uint8_t kRegIntEnable = 0x2E;
+static constexpr uint8_t kRegIntMap = 0x2F;
+static constexpr uint8_t kRegIntSource = 0x30; // A
+static constexpr uint8_t kRegDataFormat = 0x31;
+static constexpr uint8_t kRegDataX0 = 0x32;
+static constexpr uint8_t kRegDataX1 = 0x33;
+static constexpr uint8_t kRegDataY0 = 0x34;
+static constexpr uint8_t kRegDataY1 = 0x35;
+static constexpr uint8_t kRegDataZ0 = 0x36;
+static constexpr uint8_t kRegDataZ1 = 0x37;
+static constexpr uint8_t kRegFifoCtl = 0x38;
+static constexpr uint8_t kRegFifoStatus = 0x39;
 
-static const float kGravitySun = 273.95f;
-static const float kGravityEarth = 9.80665f;
-static const float kGravityMoon = 1.622f;
-static const float kGravityMars = 3.69f;
-static const float kGravityNone = 1.00f;
+static constexpr float kGravitySun = 273.95f;
+static constexpr float kGravityEarth = 9.80665f;
+static constexpr float kGravityMoon = 1.622f;
+static constexpr float kGravityMars = 3.69f;
+static constexpr float kGravityNone = 1.00f;
 
 enum dataRate_t
 {
@@ -143,6 +143,7 @@ public:
 			clearSettings();
 		}
 		return isValid;
+	}
 
 	void clearSettings(void) {
 		setRange(kRange2G);
@@ -306,4 +307,4 @@ protected:
 };
 
 
-}
+};
