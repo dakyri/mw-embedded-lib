@@ -142,7 +142,7 @@ int16_t I2c::readInt(uint8_t reg)
  * \param n number of bytes to read
  * \param buf where to sticl the results
  */
-void I2c::readBuf(uint8_t reg, size_t n, uint8_t *buf)
+bool I2c::readBuf(uint8_t reg, size_t n, uint8_t *buf)
 {
 	Wire.beginTransmission(address);
 	Wire.write(reg);
@@ -153,6 +153,7 @@ void I2c::readBuf(uint8_t reg, size_t n, uint8_t *buf)
 	for (uint8_t i=0; i<n; i++) {
 		buf[i] = Wire.read();
 	}
+	return true;
 }
 
 uint8_t I2c::writeBit(uint8_t reg, uint8_t pos, bool state)

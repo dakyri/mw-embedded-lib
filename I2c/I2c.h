@@ -17,7 +17,7 @@ public:
 	uint8_t fastReadByte(uint8_t reg);
 	uint8_t fastReadByte();
 	int16_t readInt(uint8_t reg);
-	void readBuf(uint8_t reg, size_t n, uint8_t *buf);
+	bool readBuf(uint8_t reg, size_t n, uint8_t *buf);
 	uint8_t writeBit(uint8_t reg, uint8_t pos, bool state);
 	bool readBit(uint8_t reg, uint8_t pos);
 

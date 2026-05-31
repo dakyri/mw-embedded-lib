@@ -2,9 +2,14 @@
 /*!
  * PCF8591mw.h - Header file for stripped back access to PCF8591 analog io expander.
  * Interface to any reasonable embedded mcp that we can lay hands on.
+ *  io type needs
+ *		- void writeByte(uint8_t reg, uint8_t)
+ *		- void readBuf(uint8_t reg, size_t n, uint8_t *buf);
  */
 
+#ifdef Arduino_h
 #include <stdint.h> // arduino doesn't recognise <cstdint>
+#endif
 
 #include "../common/common.h"
 

@@ -2,13 +2,16 @@
 /*!
  * PCF8574mw.h - Header file for stripped back access to PCF8574 dig io expander.
  * Interface to any reasonable embedded mcp that we can lay hands on.
+ *  io type needs
+ *		- void writeByte(uint8_t)
+ *		- uint8_t reaadByte()
  */
 
+#ifdef Arduino_h
 #include <stdint.h> // arduino doesn't recognise <cstdint>
+#endif
 
 #include "../common/common.h"
-
-/** Comment this define to disable interrupt support */
 
 template <typename T> class PCF8574
 {
